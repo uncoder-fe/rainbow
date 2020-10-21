@@ -124,5 +124,10 @@ window.onload = () => {
 
   // wasm测试
   const rust = import("./pkg");
-  rust.then((m) => m.greet("World!")).catch(console.error);
+  rust
+    .then((m) => {
+      console.log("加载rust模块成功");
+      // m.greet("World!");
+    })
+    .catch(console.error);
 };
