@@ -14,10 +14,10 @@ function demo1() {
   function getWidthRange(start, width, canvasWidth, lineNumber) {
     const startIndex = start + lineNumber * canvasWidth;
     const endIndex = startIndex + width;
-    return [startIndex, endIndex];
+    return [startIndex, endIndex - 1];
   }
   function updateRange(range, data, index) {
-    // console.log(range, colors[index + 1]);
+    // console.log(range);
     const redIsEqual = colors[index + 1][0] === colors[index][0];
     const red = !redIsEqual
       ? colors[index + 1][0] - colors[index][0]
@@ -30,6 +30,7 @@ function demo1() {
     const blue = !blueIsEqual
       ? colors[index + 1][2] - colors[index][2]
       : colors[index][2];
+    // console.log(range);
     for (let j = range[0]; j <= range[1]; j++) {
       const p = (j - range[0]) / 50;
       if (data[j * 4 + 3] > 0) {
@@ -55,13 +56,9 @@ function demo1() {
   const { data } = imageData;
   // 染色范围，切7份
   for (let i = 0; i < height; i++) {
+    // let i =349;
     for (let j = 0; j < 7; j++) {
-      const range = getWidthRange(
-        j == 0 ? 0 : 50 * j,
-        j == 0 ? 50 : 50 * j,
-        width,
-        i
-      );
+      const range = getWidthRange(j == 0 ? 0 : 50 * j, 50, width, i);
       updateRange(range, data, j);
     }
   }
@@ -115,7 +112,15 @@ function demo3() {
   const dom = document.querySelector(".rainbow-text");
   dom.style.backgroundImage = `linear-gradient(to right,rgb(${colors[0].toString()}),rgb(${colors[1].toString()}),rgb(${colors[2].toString()}),rgb(${colors[3].toString()}),rgb(${colors[4].toString()}),rgb(${colors[5].toString()}),rgb(${colors[6].toString()}),rgb(${colors[7].toString()}))`;
 }
-
+function demo4(wasm) {
+  const canvas = document.querySelector("#playground3");
+  const ctx = canvas.getContext("2d");
+  ctx.font = "50px any";
+  ctx.fillText("薇薇安，好酷。", 0, 200);
+  const imageData = ctx.getImageData(0, 0, width, height);
+  const { data } = imageData;
+  wasm.draw(ctx, 350, 350, data);
+}
 window.onload = () => {
   // console.log("你好世界");
   demo1();
@@ -125,9 +130,10 @@ window.onload = () => {
   // wasm测试
   const rust = import("./pkg");
   rust
-    .then((m) => {
+    .then((wasm) => {
       console.log("加载rust模块成功");
-      // m.greet("World!");
+      // wasm.greet("World!");
+      demo4(wasm);
     })
     .catch(console.error);
 };
