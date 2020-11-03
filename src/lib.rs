@@ -62,30 +62,14 @@ pub fn main() -> Result<(), JsValue> {
     ctx.set_font("50px any");
     // 画布渐变
     let gradient = ctx.create_linear_gradient(0.0, 0.0, 350.0, 0.0);
-    gradient
-        .add_color_stop(0.0, &format!("rgb({})", arrayToString(&colors[7])))
-        .expect("完犊子，设置颜色失败了");
-    gradient
-        .add_color_stop(1.0 / 7.0, &format!("rgb({})", arrayToString(&colors[6])))
-        .expect("完犊子，设置颜色失败了");
-    gradient
-        .add_color_stop(2.0 / 7.0, &format!("rgb({})", arrayToString(&colors[5])))
-        .expect("完犊子，设置颜色失败了");
-    gradient
-        .add_color_stop(3.0 / 7.0, &format!("rgb({})", arrayToString(&colors[4])))
-        .expect("完犊子，设置颜色失败了");
-    gradient
-        .add_color_stop(4.0 / 7.0, &format!("rgb({})", arrayToString(&colors[3])))
-        .expect("完犊子，设置颜色失败了");
-    gradient
-        .add_color_stop(5.0 / 7.0, &format!("rgb({})", arrayToString(&colors[2])))
-        .expect("完犊子，设置颜色失败了");
-    gradient
-        .add_color_stop(6.0 / 7.0, &format!("rgb({})", arrayToString(&colors[1])))
-        .expect("完犊子，设置颜色失败了");
-    gradient
-        .add_color_stop(7.0 / 7.0, &format!("rgb({})", arrayToString(&colors[0])))
-        .expect("完犊子，设置颜色失败了");
+    for i in 0..7 as usize {
+        gradient
+            .add_color_stop(
+                (i as f32) / 7.0,
+                &format!("rgb({})", arrayToString(&colors[7 - i])),
+            )
+            .expect("完犊子，设置颜色失败了");
+    }
     ctx.set_fill_style(&gradient);
     ctx.fill_text("薇薇安，好酷。", 0.0, 200.0)
         .expect("完犊子，绘制失败了");
@@ -133,32 +117,32 @@ pub fn draw(
     //     }
     // }
     // 染色范围，切7份
-    for i in 0..height {
-        for j in 0..7 {
+    for i in 0..350 as usize {
+        for j in 0..7 as usize {
             // log("j", &j.to_string());
-            let red_is_equal: bool = colors2[(j + 1) as usize][0] == colors2[j as usize][0];
+            let red_is_equal: bool = colors2[(j + 1)][0] == colors2[j][0];
             let red = (if !red_is_equal {
-                colors2[(j + 1) as usize][0] - colors2[j as usize][0]
+                colors2[(j + 1)][0] - colors2[j][0]
             } else {
-                colors2[j as usize][0]
+                colors2[j][0]
             }) as f64;
-            let green_is_equal = colors2[(j + 1) as usize][1] == colors2[j as usize][1];
+            let green_is_equal = colors2[(j + 1)][1] == colors2[j][1];
             let green = (if !green_is_equal {
-                colors2[(j + 1) as usize][1] - colors2[j as usize][1]
+                colors2[(j + 1)][1] - colors2[j][1]
             } else {
-                colors2[j as usize][1]
+                colors2[j][1]
             }) as f64;
-            let blue_is_equal = colors2[(j + 1) as usize][2] == colors2[j as usize][2];
+            let blue_is_equal = colors2[(j + 1)][2] == colors2[j][2];
             let blue = (if !blue_is_equal {
-                colors2[(j + 1) as usize][2] - colors2[j as usize][2]
+                colors2[(j + 1)][2] - colors2[j][2]
             } else {
-                colors2[j as usize][2]
+                colors2[j][2]
             }) as f64;
-            let range = get_width_range(if j == 0 { 0 } else { 50 * j }, 50, width, i);
+            let range = get_width_range(if j == 0 { 0 } else { 50 * j }, 50, 350, i);
             for z in (range.0)..=(range.1) {
                 let p = (z as f64 - range.0 as f64) / 50 as f64;
-                if p_data[(z * 4 + 3) as usize] != 0 {
-                    data[(z * 4) as usize] = (if red_is_equal {
+                if p_data[(z * 4 + 3)] != 0 {
+                    data[(z * 4)] = (if red_is_equal {
                         red
                     } else {
                         if red >= 0.0 {
@@ -167,7 +151,7 @@ pub fn draw(
                             255.0 + red * p
                         }
                     }) as u8;
-                    data[(z * 4 + 1) as usize] = (if green_is_equal {
+                    data[(z * 4 + 1)] = (if green_is_equal {
                         green
                     } else {
                         if green >= 0.0 {
@@ -176,7 +160,7 @@ pub fn draw(
                             255.0 + green * p
                         }
                     }) as u8;
-                    data[(z * 4 + 2) as usize] = (if blue_is_equal {
+                    data[(z * 4 + 2)] = (if blue_is_equal {
                         blue
                     } else {
                         if blue >= 0.0 {
@@ -185,7 +169,7 @@ pub fn draw(
                             255.0 + blue * p
                         }
                     }) as u8;
-                    data[(z * 4 + 3) as usize] = 255 as u8;
+                    data[(z * 4 + 3)] = 255 as u8;
                 }
             }
         }
@@ -201,7 +185,12 @@ pub fn draw(
     Ok(())
 }
 
-fn get_width_range(start: i32, width: i32, canvas_width: i32, line_number: i32) -> (i32, i32) {
+fn get_width_range(
+    start: usize,
+    width: usize,
+    canvas_width: usize,
+    line_number: usize,
+) -> (usize, usize) {
     let start_index = start + line_number * canvas_width;
     let end_index = start_index + width;
     return (start_index, end_index - 1);
