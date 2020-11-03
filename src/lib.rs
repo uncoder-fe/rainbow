@@ -97,25 +97,9 @@ pub fn draw(
     height: i32,
     p_data: &[i8],
 ) -> Result<(), JsValue> {
-    log("这是几", &p_data.len().to_string());
+    log("canvas像素", &p_data.len().to_string());
     let l = p_data.len();
-    let mut data = vec![0; l];
-    // log("data", &data[490000-1].to_string());
-    // data.clone_from_slice(&p_data);
-    // for x in 0..width {
-    //     for y in 0..height {
-    //         let iter_index = x + y * 350;
-    //         let p_index = iter_index * 4;
-    //         let r = p_data[(p_index) as usize];
-    //         let g = p_data[(p_index + 1) as usize];
-    //         let b = p_data[(p_index + 2) as usize];
-    //         let a = p_data[(p_index + 3) as usize];
-    //         data[(p_index) as usize] = r as u8;
-    //         data[(p_index + 1) as usize] = g as u8;
-    //         data[(p_index + 2) as usize] = b as u8;
-    //         data[(p_index + 3) as usize] = a as u8;
-    //     }
-    // }
+    let mut data: Vec<u8> = vec![0; l];
     // 染色范围，切7份
     for i in 0..350 as usize {
         for j in 0..7 as usize {
@@ -181,7 +165,7 @@ pub fn draw(
         height as u32,
     )?;
     ctx.put_image_data(&data, 0.0, 0.0);
-
+    
     Ok(())
 }
 
