@@ -69,38 +69,12 @@ function demo2() {
   const ctx = canvas.getContext("2d");
   // 画布渐变
   const gradient = ctx.createLinearGradient(0, 0, width, 0);
-  gradient.addColorStop(
-    0,
-    `rgb(${colors[0][0]},${colors[0][1]},${colors[0][2]})`
-  );
-  gradient.addColorStop(
-    1 / 7,
-    `rgb(${colors[1][0]},${colors[1][1]},${colors[1][2]})`
-  );
-  gradient.addColorStop(
-    2 / 7,
-    `rgb(${colors[2][0]},${colors[2][1]},${colors[2][2]})`
-  );
-  gradient.addColorStop(
-    3 / 7,
-    `rgb(${colors[3][0]},${colors[3][1]},${colors[3][2]})`
-  );
-  gradient.addColorStop(
-    4 / 7,
-    `rgb(${colors[4][0]},${colors[4][1]},${colors[4][2]})`
-  );
-  gradient.addColorStop(
-    5 / 7,
-    `rgb(${colors[5][0]},${colors[5][1]},${colors[5][2]})`
-  );
-  gradient.addColorStop(
-    6 / 7,
-    `rgb(${colors[6][0]},${colors[6][1]},${colors[6][2]})`
-  );
-  gradient.addColorStop(
-    7 / 7,
-    `rgb(${colors[7][0]},${colors[7][1]},${colors[7][2]})`
-  );
+  for (let i = 0; i <= 7; i++) {
+    gradient.addColorStop(
+      i / 7,
+      `rgb(${colors[i][0]},${colors[i][1]},${colors[i][2]})`
+    );
+  }
 
   ctx.save();
   ctx.font = "50px any";
@@ -123,9 +97,9 @@ function demo4(wasm) {
 }
 window.onload = () => {
   // console.log("你好世界");
-  demo1();
+  // demo1();
   demo2();
-  demo3();
+  // demo3();
 
   // wasm测试
   const rust = import("./pkg");
