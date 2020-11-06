@@ -10,6 +10,7 @@ const colors = [
   [255, 0, 0],
   [255, 255, 0],
 ].reverse();
+
 function demo1() {
   function getWidthRange(start, width, canvasWidth, lineNumber) {
     const startIndex = start + lineNumber * canvasWidth;
@@ -82,10 +83,6 @@ function demo2() {
   ctx.fillText("薇薇安，好酷。", 0, 200);
   ctx.restore();
 }
-function demo3() {
-  const dom = document.querySelector(".rainbow-text");
-  dom.style.backgroundImage = `linear-gradient(to right,rgb(${colors[0].toString()}),rgb(${colors[1].toString()}),rgb(${colors[2].toString()}),rgb(${colors[3].toString()}),rgb(${colors[4].toString()}),rgb(${colors[5].toString()}),rgb(${colors[6].toString()}),rgb(${colors[7].toString()}))`;
-}
 function demo4(wasm) {
   const canvas = document.querySelector("#playground3");
   const ctx = canvas.getContext("2d");
@@ -95,11 +92,11 @@ function demo4(wasm) {
   const { data } = imageData;
   wasm.draw(ctx, 350, 350, data);
 }
+
 window.onload = () => {
   // console.log("你好世界");
   demo1();
   demo2();
-  demo3();
 
   // wasm测试
   const rust = import("./pkg");

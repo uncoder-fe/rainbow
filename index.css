@@ -11,6 +11,17 @@ canvas {
   color: transparent;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(
+    to right,
+    rgb(255, 255, 0),
+    rgb(255, 0, 0),
+    rgb(255, 0, 255),
+    rgb(0, 0, 255),
+    rgb(0, 255, 255),
+    rgb(0, 255, 0),
+    rgb(255, 255, 0),
+    rgb(255, 0, 0)
+  );
   overflow: hidden;
   border: 1px solid red;
   user-select: none;

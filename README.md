@@ -1,6 +1,6 @@
 # 介绍
 
-使用了4种方式来实现彩虹字
+使用了5种方式来实现彩虹字
 
 # 运行
 
@@ -24,3 +24,7 @@ npm run serve
 # webassembly1
 
 使用rust的web-sys，实现
+
+# webassembly2
+
+使用webassembly处理像素，使用dom来生成canvas
