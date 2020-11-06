@@ -68,11 +68,11 @@ pub fn main() -> Result<(), JsValue> {
                 (i as f32) / 7.0,
                 &format!("rgb({})", arrayToString(&colors[7 - i])),
             )
-            .expect("完犊子，设置颜色失败了");
+            .expect("oh，渐变颜色设置失败了");
     }
     ctx.set_fill_style(&gradient);
     ctx.fill_text("薇薇安，好酷。", 0.0, 200.0)
-        .expect("完犊子，绘制失败了");
+        .expect("oh，绘制文字失败了");
     body.append_child(&canvas)?;
     // 打印到控制台里
     log("webassembly says:", "使用rust绘制成功");
