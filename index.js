@@ -97,9 +97,9 @@ function demo4(wasm) {
 }
 window.onload = () => {
   // console.log("你好世界");
-  // demo1();
+  demo1();
   demo2();
-  // demo3();
+  demo3();
 
   // wasm测试
   const rust = import("./pkg");

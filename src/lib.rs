@@ -62,7 +62,7 @@ pub fn main() -> Result<(), JsValue> {
     ctx.set_font("50px any");
     // 画布渐变
     let gradient = ctx.create_linear_gradient(0.0, 0.0, 350.0, 0.0);
-    for i in 0..7 as usize {
+    for i in 0..7 {
         gradient
             .add_color_stop(
                 (i as f32) / 7.0,
@@ -101,32 +101,32 @@ pub fn draw(
     let l = p_data.len();
     let mut data: Vec<u8> = vec![0; l];
     // 染色范围，切7份
-    for i in 0..350 as usize {
-        for j in 0..7 as usize {
+    for i in 0..350 {
+        for j in 0..7 {
             // log("j", &j.to_string());
-            let red_is_equal: bool = colors2[(j + 1)][0] == colors2[j][0];
+            let red_is_equal: bool = colors2[j + 1][0] == colors2[j][0];
             let red = (if !red_is_equal {
-                colors2[(j + 1)][0] - colors2[j][0]
+                colors2[j + 1][0] - colors2[j][0]
             } else {
                 colors2[j][0]
             }) as f64;
-            let green_is_equal = colors2[(j + 1)][1] == colors2[j][1];
+            let green_is_equal = colors2[j + 1][1] == colors2[j][1];
             let green = (if !green_is_equal {
-                colors2[(j + 1)][1] - colors2[j][1]
+                colors2[j + 1][1] - colors2[j][1]
             } else {
                 colors2[j][1]
             }) as f64;
-            let blue_is_equal = colors2[(j + 1)][2] == colors2[j][2];
+            let blue_is_equal = colors2[j + 1][2] == colors2[j][2];
             let blue = (if !blue_is_equal {
-                colors2[(j + 1)][2] - colors2[j][2]
+                colors2[j + 1][2] - colors2[j][2]
             } else {
                 colors2[j][2]
             }) as f64;
             let range = get_width_range(if j == 0 { 0 } else { 50 * j }, 50, 350, i);
             for z in (range.0)..=(range.1) {
                 let p = (z as f64 - range.0 as f64) / 50 as f64;
-                if p_data[(z * 4 + 3)] != 0 {
-                    data[(z * 4)] = (if red_is_equal {
+                if p_data[z * 4 + 3] != 0 {
+                    data[z * 4] = (if red_is_equal {
                         red
                     } else {
                         if red >= 0.0 {
@@ -135,7 +135,7 @@ pub fn draw(
                             255.0 + red * p
                         }
                     }) as u8;
-                    data[(z * 4 + 1)] = (if green_is_equal {
+                    data[z * 4 + 1] = (if green_is_equal {
                         green
                     } else {
                         if green >= 0.0 {
@@ -144,7 +144,7 @@ pub fn draw(
                             255.0 + green * p
                         }
                     }) as u8;
-                    data[(z * 4 + 2)] = (if blue_is_equal {
+                    data[z * 4 + 2] = (if blue_is_equal {
                         blue
                     } else {
                         if blue >= 0.0 {
@@ -153,7 +153,7 @@ pub fn draw(
                             255.0 + blue * p
                         }
                     }) as u8;
-                    data[(z * 4 + 3)] = 255 as u8;
+                    data[z * 4 + 3] = 255 as u8;
                 }
             }
         }
@@ -165,7 +165,6 @@ pub fn draw(
         height as u32,
     )?;
     ctx.put_image_data(&data, 0.0, 0.0);
-    
     Ok(())
 }
 
