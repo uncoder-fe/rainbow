@@ -6,7 +6,7 @@ use wasm_bindgen::Clamped;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, ImageData};
 
-const colors: [[i32; 3]; 8] = [
+const COLORS: [[i32; 3]; 8] = [
     [255, 0, 0],
     [255, 255, 0],
     [0, 255, 0],
@@ -17,7 +17,7 @@ const colors: [[i32; 3]; 8] = [
     [255, 255, 0],
 ];
 
-const colors2: [[i32; 3]; 8] = [
+const COLORS2: [[i32; 3]; 8] = [
     [255, 255, 0],
     [255, 0, 0],
     [255, 0, 255],
@@ -28,9 +28,20 @@ const colors2: [[i32; 3]; 8] = [
     [255, 0, 0],
 ];
 
-fn arrayToString(array: &[i32]) -> String {
+fn array_to_string(array: &[i32]) -> String {
     let stuff_str: Vec<String> = array.iter().map(|n| n.to_string()).collect();
     return stuff_str.join(",");
+}
+
+fn get_width_range(
+    start: usize,
+    width: usize,
+    canvas_width: usize,
+    line_number: usize,
+) -> (usize, usize) {
+    let start_index = start + line_number * canvas_width;
+    let end_index = start_index + width;
+    return (start_index, end_index - 1);
 }
 
 #[wasm_bindgen(start)]
@@ -66,7 +77,7 @@ pub fn main() -> Result<(), JsValue> {
         gradient
             .add_color_stop(
                 (i as f32) / 7.0,
-                &format!("rgb({})", arrayToString(&colors[7 - i])),
+                &format!("rgb({})", array_to_string(&COLORS[7 - i])),
             )
             .expect("oh，渐变颜色设置失败了");
     }
@@ -104,23 +115,23 @@ pub fn draw(
     for i in 0..350 {
         for j in 0..7 {
             // log("j", &j.to_string());
-            let red_is_equal: bool = colors2[j + 1][0] == colors2[j][0];
+            let red_is_equal: bool = COLORS2[j + 1][0] == COLORS2[j][0];
             let red = (if !red_is_equal {
-                colors2[j + 1][0] - colors2[j][0]
+                COLORS2[j + 1][0] - COLORS2[j][0]
             } else {
-                colors2[j][0]
+                COLORS2[j][0]
             }) as f64;
-            let green_is_equal = colors2[j + 1][1] == colors2[j][1];
+            let green_is_equal = COLORS2[j + 1][1] == COLORS2[j][1];
             let green = (if !green_is_equal {
-                colors2[j + 1][1] - colors2[j][1]
+                COLORS2[j + 1][1] - COLORS2[j][1]
             } else {
-                colors2[j][1]
+                COLORS2[j][1]
             }) as f64;
-            let blue_is_equal = colors2[j + 1][2] == colors2[j][2];
+            let blue_is_equal = COLORS2[j + 1][2] == COLORS2[j][2];
             let blue = (if !blue_is_equal {
-                colors2[j + 1][2] - colors2[j][2]
+                COLORS2[j + 1][2] - COLORS2[j][2]
             } else {
-                colors2[j][2]
+                COLORS2[j][2]
             }) as f64;
             let range = get_width_range(if j == 0 { 0 } else { 50 * j }, 50, 350, i);
             for z in (range.0)..=(range.1) {
@@ -168,13 +179,4 @@ pub fn draw(
     Ok(())
 }
 
-fn get_width_range(
-    start: usize,
-    width: usize,
-    canvas_width: usize,
-    line_number: usize,
-) -> (usize, usize) {
-    let start_index = start + line_number * canvas_width;
-    let end_index = start_index + width;
-    return (start_index, end_index - 1);
-}
+
