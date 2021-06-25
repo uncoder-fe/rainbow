@@ -108,3 +108,4 @@ window.onload = () => {
     })
     .catch(console.error);
 };
+// feat/1.0.0
